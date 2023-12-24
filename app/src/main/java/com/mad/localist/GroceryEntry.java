@@ -7,6 +7,8 @@ public class GroceryEntry {
     private String category;
     private String date;
     private String photoPath;
+    private String lattitude;
+    private String longitude;
 
     public GroceryEntry(String name, String quantity, String price, String category, String date, String photoPath) {
         this.name = name;
