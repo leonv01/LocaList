@@ -4,18 +4,26 @@ public class GroceryEntry {
     private String name;
     private String quantity;
     private String price;
+    private String details;
     private String category;
     private String date;
     private String photoPath;
     private String lattitude;
     private String longitude;
 
-    public GroceryEntry(String name, String quantity, String price, String category, String date, String photoPath) {
+    public GroceryEntry(String name, String quantity, String price, String details, String date, String photoPath) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
-        this.category = category;
+        this.details = details;
         this.date = date;
+    }
+
+    public void setData(GroceryEntry groceryEntry) {
+        this.name = groceryEntry.getName();
+        this.price = groceryEntry.getPrice();
+        this.details = groceryEntry.getDetails();
+        this.quantity = groceryEntry.getQuantity();
     }
 
     public void setName(String name) {
@@ -54,6 +62,8 @@ public class GroceryEntry {
         return price;
     }
 
+    public String getDetails(){return details;}
+
     public String getCategory() {
         return category;
     }
@@ -65,4 +75,6 @@ public class GroceryEntry {
     public String getPhotoPath() {
         return photoPath;
     }
+
+
 }

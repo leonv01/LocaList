@@ -58,20 +58,25 @@ public class MainActivity extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         String entryName = result.getData().getStringExtra("groceryEntryName");
                         String entityQuantity = result.getData().getStringExtra("groceryEntryQuantity");
+                        String entityPrice = result.getData().getStringExtra("groceryEntryPrice");
+                        String entryDetails = result.getData().getStringExtra("groceryEntryDetails");
+
                         // Extract other data fields similarly
 
                         // Use the extracted data to create a new GroceryEntry
-                        GroceryEntry newEntry = new GroceryEntry(
-                                entryName, entityQuantity, "", "","",""
-                        );
+
 
                         int position = result.getData().getIntExtra("groceryEntryPosition", -1);
+
+                        GroceryEntry groceryEntry = new GroceryEntry(
+                                entryName, entityQuantity, entityPrice, entryDetails,"",""
+                        );
+
                         if(position >= 0){
-                            groceryEntryList.remove(position);
-                            groceryEntryList.add(newEntry);
+                            groceryEntryList.get(position).setData(groceryEntry);
                         }
                         else{
-                            groceryEntryList.add(newEntry);
+                            groceryEntryList.add(groceryEntry);
                         }
 
                         // Assuming groceryEntryList is accessible here
@@ -86,11 +91,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GroceryEntry groceryEntry = groceryListAdapter.data.get(position);
-                String entryName = groceryEntry.getName();
 
                 Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
-                intent.putExtra("groceryEntryName", entryName);
+                intent.putExtra("groceryEntryName", groceryEntry.getName());
                 intent.putExtra("groceryEntryQuantity", groceryEntry.getQuantity());
+                intent.putExtra("groceryEntryPrice", groceryEntry.getPrice());
+                intent.putExtra("groceryEntryDetails", groceryEntry.getDetails());
+
                 intent.putExtra("groceryEntryPosition", position);
 
                 launcher.launch(intent);

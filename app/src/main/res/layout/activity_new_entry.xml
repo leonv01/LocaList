@@ -21,10 +21,10 @@
         android:id="@+id/groceryArticleText"
         android:layout_width="76dp"
         android:layout_height="26dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:text="Article"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/groceryArticleEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newEntryToolbar" />
 
@@ -52,15 +52,61 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groceryArticleEditText" />
 
+    <EditText
+        android:id="@+id/groceryPriceEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groceryQuantityEditText" />
+
     <TextView
         android:id="@+id/groceryQuantityText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:text="Quantity"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/groceryQuantityEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groceryArticleEditText" />
+
+    <TextView
+        android:id="@+id/groceryPriceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="Price"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groceryQuantityEditText" />
+
+    <TextView
+        android:id="@+id/groceryDetailsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="Details"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groceryPriceEditText" />
+
+    <EditText
+        android:id="@+id/groceryDetailsMultiline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groceryPriceEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

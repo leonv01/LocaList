@@ -14,7 +14,8 @@ public class NewEntryActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
 
-    private EditText groceryArticleEditText, groceryQuantityEditText;
+    private EditText groceryArticleEditText, groceryQuantityEditText, groceryPriceEditText;
+    private EditText groceryDetailsMultiline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +24,18 @@ public class NewEntryActivity extends AppCompatActivity {
 
         groceryArticleEditText = findViewById(R.id.groceryArticleEditText);
         groceryQuantityEditText = findViewById(R.id.groceryQuantityEditText);
+        groceryPriceEditText = findViewById(R.id.groceryPriceEditText);
+        groceryDetailsMultiline = findViewById(R.id.groceryDetailsMultiline);
 
         String entryName = (String) getIntent().getSerializableExtra("groceryEntryName");
         String entryQuantity = (String) getIntent().getSerializableExtra("groceryEntryQuantity");
-        groceryArticleEditText.setText(entryName);
-        groceryQuantityEditText.setText(entryQuantity);
+        String entryPrice = (String) getIntent().getSerializableExtra("groceryEntryPrice");
+        String entryDetails = (String) getIntent().getSerializableExtra("groceryEntryDetails");
 
+        groceryArticleEditText.setText(entryName == null ? "" : entryName);
+        groceryQuantityEditText.setText(entryQuantity == null ? "" : entryQuantity);
+        groceryPriceEditText.setText(entryPrice == null ? "" : entryPrice);
+        groceryDetailsMultiline.setText(entryDetails == null ? "" : entryDetails);
 
         toolbar = findViewById(R.id.newEntryToolbar);
         setSupportActionBar(toolbar);
@@ -41,8 +48,11 @@ public class NewEntryActivity extends AppCompatActivity {
             int entryPosition = getIntent().getIntExtra("groceryEntryPosition", -1);
 
             returnIntent.putExtra("groceryEntryName", groceryArticleEditText.getText().toString());
-            returnIntent.putExtra("groceryEntryPosition", entryPosition);
             returnIntent.putExtra("groceryEntryQuantity", groceryQuantityEditText.getText().toString());
+            returnIntent.putExtra("groceryEntryPrice", groceryPriceEditText.getText().toString());
+            returnIntent.putExtra("groceryEntryDetails", groceryDetailsMultiline.getText().toString());
+
+            returnIntent.putExtra("groceryEntryPosition", entryPosition);
             // Add other putExtra calls for other data
 
             setResult(RESULT_OK, returnIntent);
