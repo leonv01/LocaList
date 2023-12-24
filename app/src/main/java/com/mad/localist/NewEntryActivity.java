@@ -14,14 +14,21 @@ public class NewEntryActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
 
-    private EditText newEntryNameText;
+    private EditText groceryArticleEditText, groceryQuantityEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
 
-        newEntryNameText = findViewById(R.id.newEntryNameText);
+        groceryArticleEditText = findViewById(R.id.groceryArticleEditText);
+        groceryQuantityEditText = findViewById(R.id.groceryQuantityEditText);
+
+        String entryName = (String) getIntent().getSerializableExtra("groceryEntryName");
+        String entryQuantity = (String) getIntent().getSerializableExtra("groceryEntryQuantity");
+        groceryArticleEditText.setText(entryName);
+        groceryQuantityEditText.setText(entryQuantity);
+
 
         toolbar = findViewById(R.id.newEntryToolbar);
         setSupportActionBar(toolbar);
@@ -31,7 +38,11 @@ public class NewEntryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.menu_save_entry){
             Intent returnIntent = new Intent();
-            returnIntent.putExtra("entryName", newEntryNameText.getText().toString());
+            int entryPosition = getIntent().getIntExtra("groceryEntryPosition", -1);
+
+            returnIntent.putExtra("groceryEntryName", groceryArticleEditText.getText().toString());
+            returnIntent.putExtra("groceryEntryPosition", entryPosition);
+            returnIntent.putExtra("groceryEntryQuantity", groceryQuantityEditText.getText().toString());
             // Add other putExtra calls for other data
 
             setResult(RESULT_OK, returnIntent);

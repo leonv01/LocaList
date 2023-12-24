@@ -43,13 +43,21 @@ public class MainActivity extends AppCompatActivity {
         groceryListView = findViewById(R.id.groceryListView);
         groceryListView.setAdapter(groceryListAdapter);
 
+        groceryListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("TEST", "TEST");
+                return false;
+            }
+        });
+
 
         launcher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        String entryName = result.getData().getStringExtra("entryName");
-                        String entityQuantity = result.getData().getStringExtra("entryQuantity");
+                        String entryName = result.getData().getStringExtra("groceryEntryName");
+                        String entityQuantity = result.getData().getStringExtra("groceryEntryQuantity");
                         // Extract other data fields similarly
 
                         // Use the extracted data to create a new GroceryEntry
@@ -57,14 +65,37 @@ public class MainActivity extends AppCompatActivity {
                                 entryName, entityQuantity, "", "","",""
                         );
 
+                        int position = result.getData().getIntExtra("groceryEntryPosition", -1);
+                        if(position >= 0){
+                            groceryEntryList.remove(position);
+                            groceryEntryList.add(newEntry);
+                        }
+                        else{
+                            groceryEntryList.add(newEntry);
+                        }
+
                         // Assuming groceryEntryList is accessible here
-                        groceryEntryList.add(newEntry);
                         groceryListAdapter.notifyDataSetChanged(); // Correct method name
                     } else {
                         Log.e("MainActivity", "Failed to get data from NewEntryActivity");
                     }
                 }
         );
+
+        groceryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GroceryEntry groceryEntry = groceryListAdapter.data.get(position);
+                String entryName = groceryEntry.getName();
+
+                Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
+                intent.putExtra("groceryEntryName", entryName);
+                intent.putExtra("groceryEntryQuantity", groceryEntry.getQuantity());
+                intent.putExtra("groceryEntryPosition", position);
+
+                launcher.launch(intent);
+            }
+        });
     }
 
     @Override
