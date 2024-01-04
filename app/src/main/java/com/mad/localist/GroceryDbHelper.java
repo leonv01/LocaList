@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 public class GroceryDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "GroceryList.db";
 
 
@@ -18,13 +18,16 @@ public class GroceryDbHelper extends SQLiteOpenHelper {
     public static final String GROCERY_COL_DESCRIPTION = "description";
     public static final String GROCERY_COL_QUANTITY = "quantity";
     public static final String GROCERY_COL_LOCATION = "location";
+    public static final String GROCERY_COL_PRICE = "price";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + GROCERY_TABLE + " ("
             + BaseColumns._ID + " INTEGER PRIMARY KEY,"
             + GROCERY_COL_ARTICLE + " TEXT,"
             + GROCERY_COL_DESCRIPTION + " TEXT,"
-            + GROCERY_COL_QUANTITY + " TEXT)";
+            + GROCERY_COL_QUANTITY + " TEXT,"
+            + GROCERY_COL_LOCATION + " TEXT,"
+            + GROCERY_COL_PRICE + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + GROCERY_TABLE;
 
