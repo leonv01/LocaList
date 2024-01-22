@@ -86,11 +86,7 @@ public class GroceryEntry {
     public boolean equals(@Nullable Object obj) {
         if(obj instanceof GroceryEntry){
             GroceryEntry groceryEntry = (GroceryEntry) obj;
-            return groceryEntry.getName().equals(this.getName()) &&
-                    groceryEntry.getQuantity().equals(this.getQuantity()) &&
-                    groceryEntry.getPrice().equals(this.getPrice()) &&
-                    groceryEntry.getDetails().equals(this.getDetails()) &&
-                    groceryEntry.getLocation().equals(this.getLocation());
+            return groceryEntry.getName().equals(this.getName());
         }
         return false;
     }
