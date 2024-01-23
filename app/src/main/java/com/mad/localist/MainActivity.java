@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if(distance[0] < 1000){
                             groceryNotifier.showOrUpdateNotification((ArrayList<GroceryEntry>) groceryEntryList);
+
                             Log.e("Location", "Notification shown");
                         }
                         else{

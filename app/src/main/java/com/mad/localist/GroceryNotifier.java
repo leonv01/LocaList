@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
@@ -44,9 +45,9 @@ public class GroceryNotifier {
         notificationBuilder.setContentIntent(resultPendingIntent);
     }
 
-    public void showOrUpdateNotification(ArrayList<GroceryEntry> groceryEntries) {
+    public void showOrUpdateNotification(ArrayList<GroceryEntry> groceryEntries   ) {
         if(groceryEntries.size() > 0) {
-            notificationBuilder.setContentText("You have " + groceryEntries.size() + " groceries to buy!");
+            notificationBuilder.setContentText("You have " + groceryEntries.size() + " groceries to buy from " + groceryEntries.get(0).getLocation() + "!");
             notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
         } else {
             notificationManager.cancel(NOTIFICATION_ID);

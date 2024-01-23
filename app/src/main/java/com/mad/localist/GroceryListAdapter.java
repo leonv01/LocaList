@@ -46,9 +46,9 @@ public class GroceryListAdapter extends BaseAdapter {
         }
 
         TextView nameTextView = view.findViewById(R.id.grocery_list_entry_name);
-        TextView amountTextView = view.findViewById(R.id.grocery_list_entry_amount);
+        TextView amountTextView = view.findViewById(R.id.grocery_list_entry_location);
         nameTextView.setText(groceryEntry.getName());
-        amountTextView.setText(groceryEntry.getQuantity());
+        amountTextView.setText(groceryEntry.getLocation());
 
         return view;
     }

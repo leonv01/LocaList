@@ -33,7 +33,7 @@ public class NewEntryActivity extends AppCompatActivity {
 
     private EditText groceryArticleEditText, groceryQuantityEditText, groceryPriceEditText;
     private EditText groceryDetailsMultiline, groceryLocationEditText;
-    private Button showInMaps, addImageButton;
+    private Button showInMaps;
     private String imagePath = "";
     private ImageView imageView;
 
@@ -47,7 +47,6 @@ public class NewEntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_entry);
 
         showInMaps = (Button) findViewById(R.id.showOnMapButton);
-        addImageButton = (Button) findViewById(R.id.addImageButton);
 
         imageView = findViewById(R.id.imageView);
 
