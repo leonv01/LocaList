@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> launcher;
     private GroceryEntry deletedEntry, addedEntry;
 
-    private HashMap<String, GroceryEntry> groceryEntryHashMap;
+    private HashMap<String, ArrayList<GroceryEntry>> groceryEntryHashMap;
 
     private final GroceryDbHelper dbHelper = new GroceryDbHelper(this);
 
@@ -91,18 +92,30 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 for(android.location.Location location : locationResult.getLocations()){
-                    Log.e("Location", getAddressForLocation(location));
+         //           Log.e("Location", getAddressForLocation(location));
                     Location loc = getLocationFromAddress("Penny Laichingen");
                     if(loc != null){
-                        Log.e("Location", getAddressForLocation(loc));
+                   //     Log.e("Location", getAddressForLocation(loc));
                         float[] distance = new float[1];
                         Location.distanceBetween(location.getLatitude(), location.getLongitude(), loc.getLatitude(), loc.getLongitude(), distance);
                         Log.e("Location", String.valueOf(distance[0]));
 
-                        if(distance[0] < 1000){
-                            groceryNotifier.showOrUpdateNotification((ArrayList<GroceryEntry>) groceryEntryList);
-
-                            Log.e("Location", "Notification shown");
+                        if(distance[0] < 100){
+                            ArrayList<GroceryEntry> entriesAtSameLocation = new ArrayList<>();
+                            groceryEntryHashMap.forEach((key,value) -> {
+                                float[] dist = new float[1];
+                                Location targetLocation = getLocationFromAddress(key);
+                                Location.distanceBetween(location.getLatitude(), location.getLongitude(),
+                                        targetLocation.getLatitude(), targetLocation.getLongitude(), dist);
+                                if(dist[0] < 100){
+                                    for (GroceryEntry groceryEntry : value) {
+                                        Log.e("VALASJD", groceryEntry.getName());
+                                    }
+                                    groceryNotifier.showOrUpdateNotification((ArrayList<GroceryEntry>) value);
+                                }
+                            });
+                          //  groceryNotifier.showOrUpdateNotification((ArrayList<GroceryEntry>) groceryEntryList);
+                          //  Log.e("Location", "Notification shown");
                         }
                         else{
                             groceryNotifier.removeNotification();
@@ -139,6 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+
+
                         String entryName = result.getData().getStringExtra("groceryEntryName");
                         String entityQuantity = result.getData().getStringExtra("groceryEntryQuantity");
                         String entityPrice = result.getData().getStringExtra("groceryEntryPrice");
@@ -159,10 +174,15 @@ public class MainActivity extends AppCompatActivity {
                                 entryName, entityQuantity, entityPrice, entryDetails,"",entryImage, entryLocation
                         );
 
+
                         if(position >= 0){
                             groceryEntryList.get(position).setData(groceryEntry);
+                            //groceryEntryList.remove(position);
+
+                            Log.e("TEST", "Das hier");
                         }
                         else{
+                            Log.e("TEST", "Das hier auch");
                             groceryEntryList.add(groceryEntry);
                         }
 
@@ -196,6 +216,8 @@ public class MainActivity extends AppCompatActivity {
         groceryListView.setOnItemClickListener((parent, view, position, id) -> {
             GroceryEntry groceryEntry = groceryListAdapter.data.get(position);
 
+            Log.e("Test" ," Test");
+
             Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
             intent.putExtra("groceryEntryName", groceryEntry.getName());
             intent.putExtra("groceryEntryQuantity", groceryEntry.getQuantity());
@@ -214,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        Log.e("Das ier", "hsadjasjdkjsadjas");
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
 
@@ -246,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(!groceryEntryList.contains(entry)){
                 groceryEntryList.add(entry);
+
             }
 
         }
@@ -263,7 +288,8 @@ public class MainActivity extends AppCompatActivity {
 
         groceryEntryHashMap.clear();
         groceryEntryList.forEach(groceryEntry -> {
-            groceryEntryHashMap.put(groceryEntry.getLocation(), groceryEntry);
+            groceryEntryHashMap.computeIfAbsent(groceryEntry.getLocation(), k -> new ArrayList<GroceryEntry>());
+            Objects.requireNonNull(groceryEntryHashMap.get(groceryEntry.getLocation())).add(groceryEntry);
         });
 
         groceryEntryHashMap.forEach((key, value) -> {
