@@ -291,10 +291,6 @@ public class MainActivity extends AppCompatActivity {
             groceryEntryHashMap.computeIfAbsent(groceryEntry.getLocation(), k -> new ArrayList<GroceryEntry>());
             Objects.requireNonNull(groceryEntryHashMap.get(groceryEntry.getLocation())).add(groceryEntry);
         });
-
-        groceryEntryHashMap.forEach((key, value) -> {
-            Log.e("GroceryEntryHashMap", key + " " + value.getName());
-        });
     }
 
     @Override
