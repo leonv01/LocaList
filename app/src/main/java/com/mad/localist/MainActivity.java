@@ -88,42 +88,17 @@ public class MainActivity extends AppCompatActivity {
         locationCallback = new LocationCallback(){
             @Override
             public void onLocationResult(@NonNull com.google.android.gms.location.LocationResult locationResult) {
-                if(locationResult == null){
-                    return;
-                }
-                for(android.location.Location location : locationResult.getLocations()){
-         //           Log.e("Location", getAddressForLocation(location));
-                    Location loc = getLocationFromAddress("Penny Laichingen");
-                    if(loc != null){
-                   //     Log.e("Location", getAddressForLocation(loc));
-                        float[] distance = new float[1];
-                        Location.distanceBetween(location.getLatitude(), location.getLongitude(), loc.getLatitude(), loc.getLongitude(), distance);
-                        Log.e("Location", String.valueOf(distance[0]));
-
-                        if(distance[0] < 100){
-                            ArrayList<GroceryEntry> entriesAtSameLocation = new ArrayList<>();
-                            groceryEntryHashMap.forEach((key,value) -> {
-                                float[] dist = new float[1];
-                                Location targetLocation = getLocationFromAddress(key);
-                                Location.distanceBetween(location.getLatitude(), location.getLongitude(),
-                                        targetLocation.getLatitude(), targetLocation.getLongitude(), dist);
-                                if(dist[0] < 100){
-                                    for (GroceryEntry groceryEntry : value) {
-                                        Log.e("VALASJD", groceryEntry.getName());
-                                    }
-                                    groceryNotifier.showOrUpdateNotification((ArrayList<GroceryEntry>) value);
-                                }
-                            });
-                          //  groceryNotifier.showOrUpdateNotification((ArrayList<GroceryEntry>) groceryEntryList);
-                          //  Log.e("Location", "Notification shown");
+                for (android.location.Location location : locationResult.getLocations()) {
+                    groceryEntryHashMap.forEach((key, value) -> {
+                        float[] dist = new float[1];
+                        Location targetLocation = getLocationFromAddress(key);
+                        assert targetLocation != null;
+                        Location.distanceBetween(location.getLatitude(), location.getLongitude(),
+                                targetLocation.getLatitude(), targetLocation.getLongitude(), dist);
+                        if (dist[0] < 100) {
+                            groceryNotifier.showOrUpdateNotification(value);
                         }
-                        else{
-                            groceryNotifier.removeNotification();
-                        }
-                    }
-                    else{
-                        Log.e("Location", "Location is null");
-                    }
+                    });
                 }
             }
         };
@@ -177,12 +152,8 @@ public class MainActivity extends AppCompatActivity {
 
                         if(position >= 0){
                             groceryEntryList.get(position).setData(groceryEntry);
-                            //groceryEntryList.remove(position);
-
-                            Log.e("TEST", "Das hier");
                         }
                         else{
-                            Log.e("TEST", "Das hier auch");
                             groceryEntryList.add(groceryEntry);
                         }
 
@@ -215,9 +186,6 @@ public class MainActivity extends AppCompatActivity {
 
         groceryListView.setOnItemClickListener((parent, view, position, id) -> {
             GroceryEntry groceryEntry = groceryListAdapter.data.get(position);
-
-            Log.e("Test" ," Test");
-
             Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
             intent.putExtra("groceryEntryName", groceryEntry.getName());
             intent.putExtra("groceryEntryQuantity", groceryEntry.getQuantity());
@@ -236,8 +204,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        Log.e("Das ier", "hsadjasjdkjsadjas");
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
 
